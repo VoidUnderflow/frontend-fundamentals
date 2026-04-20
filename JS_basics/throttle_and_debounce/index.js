@@ -4,12 +4,25 @@ const tracker = document.getElementById("tracker");
 const trackerDot = document.getElementById("tracker-dot");
 const trackerCoords = document.getElementById("tracker-coords");
 
-// --- Debounce ---
+// Debounce
+function debounce(callback, delay) {
+  let timeoutId;
+  return function (...args) {
+    const context = this;
+    clearTimeout(timeoutId);
 
-// TODO: implement debounce(fn, delay) and use it below
+    timeoutId = setTimeout(() => {
+      callback.call(context, ...args);
+    }, delay);
+  };
+}
+
+const debouncedOutput = debounce((e) => {
+  debounceOutput.textContent = e.target.value || "\u2014";
+}, 200);
 
 debounceInput.addEventListener("input", (e) => {
-  debounceOutput.textContent = e.target.value || "\u2014";
+  debouncedOutput(e);
 });
 
 // --- Throttle ---
