@@ -24,11 +24,18 @@ debounceInput.addEventListener("input", (e) => {
   debouncedOutput(e);
 });
 
-// --- Throttle ---
+// Throttle
+function throttle(callback, minTime) {
+  let start = Date.now();
+  return (...args) => {
+    if (Date.now() - start >= minTime) {
+      callback(...args);
+      start = Date.now();
+    }
+  };
+}
 
-// TODO: implement throttle(fn, limit) and use it below
-
-tracker.addEventListener("mousemove", (e) => {
+function track(e) {
   const rect = tracker.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
@@ -36,4 +43,8 @@ tracker.addEventListener("mousemove", (e) => {
   trackerDot.style.left = `${x}px`;
   trackerDot.style.top = `${y}px`;
   trackerCoords.textContent = `x: ${Math.round(x)}   y: ${Math.round(y)}`;
-});
+}
+
+const throttledTrack = throttle(track, 400);
+
+tracker.addEventListener("mousemove", throttledTrack);
