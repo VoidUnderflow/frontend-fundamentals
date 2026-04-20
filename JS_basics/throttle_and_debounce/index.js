@@ -7,12 +7,11 @@ const trackerCoords = document.getElementById("tracker-coords");
 // Debounce
 function debounce(callback, delay) {
   let timeoutId;
-  return function (...args) {
-    const context = this;
+  return (...args) => {
     clearTimeout(timeoutId);
 
     timeoutId = setTimeout(() => {
-      callback.call(context, ...args);
+      callback(...args);
     }, delay);
   };
 }
